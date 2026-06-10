@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: tracking-service
+  kafka:
+    consumer:
+      group-id: tracking-service-group
+
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      properties:
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer
+        spring.json.trusted.packages: com.danijelsudimac.shipmentservice.model
+application:
+  kafka:
+    shipment-topic: shipment-ingest-topic.v1
+    shipment-topic-dlt: shipment-ingest-topic.v1-dlt
+    topic-invalid-messages: shipment-ingest-messages.v1
+
+
+resilience4j:
+  circuitbreaker:
+    circuit-breaker-aspect-order: 2
+    instances:
+      notification-service:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 3
+  retry:
+    retry-aspect-order: 1
+    config:
+      default:
+        max-attempts: 3
+    instances:
+      notification-service:
+        max-attempts: 3
+        wait-duration: 500ms
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+        retry-exceptions:
+          - java.lang.RuntimeException
+          - java.io.IOException
+          - org.springframework.web.client.ResourceAccessException
+          - org.springframework.web.client.HttpServerErrorException
+        ignore-exceptions:
+          - org.springframework.web.client.HttpClientErrorException$BadRequest
+          - org.springframework.web.client.HttpClientErrorException$NotFound
