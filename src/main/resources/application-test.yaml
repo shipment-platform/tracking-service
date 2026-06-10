@@ -1,0 +1,17 @@
+resilience4j:
+  retry:
+    instances:
+      notification-service:
+        max-attempts: 3
+        wait-duration: 1ms
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 5
+        minimum-number-of-calls: 5
+        failure-rate-threshold: 50
+
+    instances:
+      notification-service:
+        base-config: default
