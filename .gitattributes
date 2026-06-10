@@ -1,0 +1,42 @@
+# Normalize text files to LF in repo
+* text=auto eol=lf
+
+# Java / Maven / config
+*.java text
+*.xml text
+*.properties text
+*.yml text
+*.yaml text
+*.json text
+*.avsc text
+
+# Scripts
+*.sh text eol=lf
+mvnw text eol=lf
+
+# Windows scripts
+*.cmd text eol=crlf
+*.bat text eol=crlf
+mvnw.cmd text eol=crlf
+
+# Docs / git files
+*.md text
+.gitignore text
+.gitattributes text
+
+# Binary files
+*.jar binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+.DS_Store binary
+Thumbs.db binary
+
+# Generated sources
+**/target/generated-sources/** linguist-generated=true
+**/generated-sources/avro/** linguist-generated=true
+
+# Avro schemas
+*.avsc linguist-documentation=true
