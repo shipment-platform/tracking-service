@@ -19,8 +19,8 @@ application:
     shipment-topic: shipment-ingest-topic.v1
     shipment-topic-dlt: shipment-ingest-topic.v1-dlt
     topic-invalid-messages: shipment-ingest-messages.v1
-
-
+  notification-service:
+    base-path: http://notification:8080
 resilience4j:
   circuitbreaker:
     circuit-breaker-aspect-order: 2
