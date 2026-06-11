@@ -17,6 +17,7 @@
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<shipment-api-contract.version>0.0.4</shipment-api-contract.version>
 		<notification-api-contract.version>0.0.5</notification-api-contract.version>
+		<micrometer.version>1.13.13</micrometer.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -134,20 +135,6 @@
 			</url>
 		</repository>
 	</repositories>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>com.google.protobuf</groupId>
-				<artifactId>protobuf-java</artifactId>
-				<version>3.25.5</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.protobuf</groupId>
-				<artifactId>protobuf-java-util</artifactId>
-				<version>3.25.5</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<build>
 		<finalName>tracking-service</finalName>
 		<plugins>
