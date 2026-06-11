@@ -184,7 +184,7 @@
 									<artifactId>
 										notification-service-openapi-contract
 									</artifactId>
-									<version>0.0.4</version>
+									<version>0.0.5</version>
 									<includes>
 										openapi/**.yaml
 									</includes>
