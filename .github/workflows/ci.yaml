@@ -35,6 +35,9 @@ jobs:
 
       - name: Build and test
         run: ./mvnw clean verify -Dspring.profiles.active=test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SPRING_PROFILES_ACTIVE: test
 
   shipment-api-contract-module-docker-image-build-and-push:
     needs: build-test
