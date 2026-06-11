@@ -9,7 +9,7 @@ receivers:
 
 exporters:
   prometheusremotewrite:
-    endpoint: ${env:PROMETHEUS_URL}
+    endpoint: ${env:SPRING_PROMETHEUS_URL}
     auth:
       authenticator: sigv4auth
 
