@@ -15,8 +15,8 @@
 		<java.version>21</java.version>
 		<lombok.version>1.18.34</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
-		<shipment-api-contract.version>0.0.3</shipment-api-contract.version>
-		<notification-api-contract.version>0.0.4</notification-api-contract.version>
+		<shipment-api-contract.version>0.0.4</shipment-api-contract.version>
+		<notification-api-contract.version>0.0.5</notification-api-contract.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -89,7 +89,7 @@
 		</dependency>
 		<dependency>
 			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-prometheus</artifactId>
+			<artifactId>micrometer-registry-otlp</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.confluent</groupId>
@@ -125,6 +125,7 @@
 		</repository>
 	</repositories>
 	<build>
+		<finalName>tracking-service</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -183,7 +184,7 @@
 									<artifactId>
 										notification-service-openapi-contract
 									</artifactId>
-									<version>0.0.4</version>
+									<version>0.0.5</version>
 									<includes>
 										openapi/**.yaml
 									</includes>
