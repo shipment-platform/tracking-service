@@ -15,8 +15,8 @@
 		<java.version>21</java.version>
 		<lombok.version>1.18.34</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
-		<shipment-api-contract.version>0.0.3</shipment-api-contract.version>
-		<notification-api-contract.version>0.0.4</notification-api-contract.version>
+		<shipment-api-contract.version>0.0.4</shipment-api-contract.version>
+		<notification-api-contract.version>0.0.5</notification-api-contract.version>
 	</properties>
 	<dependencies>
 		<dependency>

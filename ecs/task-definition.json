@@ -30,15 +30,15 @@
       "secrets": [
         {
           "name": "SPRING_DATASOURCE_URL",
-          "valueFrom": "arn:aws:ssm:us-east-2:581979856637:parameter/SPRING_DATASOURCE_URL"
+          "valueFrom": "arn:aws:ssm:us-east-2:581979856637:parameter/SPRING_DATASOURCE_URL_2"
         },
         {
           "name": "SPRING_DATASOURCE_USERNAME",
-          "valueFrom": "arn:aws:ssm:us-east-2:581979856637:parameter/SPRING_DATASOURCE_USERNAME"
+          "valueFrom": "arn:aws:ssm:us-east-2:581979856637:parameter/SPRING_DATASOURCE_USERNAME_2"
         },
         {
           "name": "SPRING_DATASOURCE_PASSWORD",
-          "valueFrom": "arn:aws:ssm:us-east-2:581979856637:parameter/SPRING_DATASOURCE_PASSWORD"
+          "valueFrom": "arn:aws:ssm:us-east-2:581979856637:parameter/SPRING_DATASOURCE_PASSWORD_2"
         },
         {
           "name": "SPRING_KAFKA_BOOTSTRAP_SERVERS",
