@@ -1,0 +1,59 @@
+name: CD (Deploy to ECS)
+
+on:
+  workflow_dispatch:
+
+env:
+  ECR_REPOSITORY: shipment-platform/tracking-service
+  ECR_REPOSITORY_OTEL: shipment-platform/tracking-otel-collector
+  ECS_SERVICE: tracking-service-service-quc94xm6
+  ECS_CLUSTER: shipment-service-cluster
+
+jobs:
+  docker-image-build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Render ECS task definition
+        id: task-def-1
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ecs/task-definition.json
+          container-name: shipment-service
+          image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+
+      - name: Render ECS task definition (otel)
+        id: task-def-2
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def-1.outputs.task-definition }}
+          container-name: otel-collector
+          image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_OTEL }}:${{ github.sha }}
+
+      - name: Deploy ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.task-def-2.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
