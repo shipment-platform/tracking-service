@@ -15,9 +15,10 @@
 		<java.version>21</java.version>
 		<lombok.version>1.18.34</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
-		<shipment-api-contract.version>0.0.4</shipment-api-contract.version>
+		<shipment-api-contract.version>0.0.5</shipment-api-contract.version>
 		<notification-api-contract.version>0.0.5</notification-api-contract.version>
-		<micrometer.version>1.13.13</micrometer.version>
+		<micrometer.version>1.17.0</micrometer.version>
+		<kafka-protobuf-serializer.version>8.2.1</kafka-protobuf-serializer.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -95,18 +96,8 @@
 		<dependency>
 			<groupId>io.confluent</groupId>
 			<artifactId>kafka-protobuf-serializer</artifactId>
-			<version>7.6.0</version>
+			<version>${kafka-protobuf-serializer.version}</version>
 			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>com.google.protobuf</groupId>
-					<artifactId>protobuf-java-util</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.google.protobuf</groupId>
-					<artifactId>protobuf-java</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>io.github.resilience4j</groupId>
