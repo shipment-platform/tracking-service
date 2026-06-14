@@ -4,6 +4,7 @@ import com.danijelsudimac.shipmentservice.model.event.ShipmentCreatedEvent;
 import com.danijelsudimac.shipmentservice.model.event.ShipmentDeletedEvent;
 import com.danijelsudimac.shipmentservice.model.event.ShipmentUpdatedEvent;
 import com.danijelsudimac.trackingservice.mapper.ShipmentMapper;
+import com.danijelsudimac.trackingservice.model.ShipmentStatus;
 import com.danijelsudimac.trackingservice.model.entity.Shipment;
 import com.danijelsudimac.trackingservice.repository.ShipmentRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,11 +52,12 @@ public class ShipmentService {
     public void process(ShipmentDeletedEvent event) {
         repository.findByExternalIdAndClientId(event.getExternalId(), event.getClientId())
                 .ifPresentOrElse(shipment -> {
-                            repository.delete(shipment);
-                            catchExceptions(notificationClient::sendShipmentDeleted,shipment);
-                            trackingMetrics.incrementShipmentDeleted();
-                            },
-                        () -> log.warn(SHIPMENT_NOT_FOUND_FOR_DELETION_MESSAGE, event.getExternalId()));
+                    shipment.setStatus(ShipmentStatus.CANCELLED);
+                    repository.save(shipment);
+                    catchExceptions(notificationClient::sendShipmentDeleted,shipment);
+                    trackingMetrics.incrementShipmentDeleted();
+                    },
+                () -> log.warn(SHIPMENT_NOT_FOUND_FOR_DELETION_MESSAGE, event.getExternalId()));
     }
 
     private boolean updateShipmentFromEvent(Shipment shipment, ShipmentUpdatedEvent event) {
@@ -104,9 +106,7 @@ public class ShipmentService {
             shipment.setEstimatedDelivery(Instant.ofEpochMilli(event.getEstimatedDelivery()));
         }
 
-        if (event.getStatus() != null) {
-            shipment.setStatus(mapper.map(event.getStatus()));
-        }
+        shipment.setStatus(mapper.map(event.getStatus()));
 
         return true;
     }

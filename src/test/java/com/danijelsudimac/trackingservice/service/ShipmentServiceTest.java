@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
@@ -168,7 +169,7 @@ public class ShipmentServiceTest {
 
 
     @Test
-    void shouldDeleteShipmentWhenExists() {
+    void shouldMarkDeletedShipmentWhenExists() {
         // given
         var event = ShipmentDeletedEvent.newBuilder()
                 .setExternalId("ext-1")
@@ -184,7 +185,8 @@ public class ShipmentServiceTest {
         shipmentService.process(event);
 
         // then
-        verify(shipmentRepository).delete(shipment);
+        verify(shipmentRepository).save(shipment);
+        assertEquals(com.danijelsudimac.trackingservice.model.ShipmentStatus.CANCELLED, shipment.getStatus());
         verify(notificationClient).sendShipmentDeleted(shipment);
         verify(trackingMetrics).incrementShipmentDeleted();
     }

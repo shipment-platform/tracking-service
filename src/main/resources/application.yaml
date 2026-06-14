@@ -1,4 +1,6 @@
 spring:
+  flyway:
+    locations: classpath:db/migration
   application:
     name: tracking-service
   kafka:
@@ -18,7 +20,7 @@ application:
   kafka:
     shipment-topic: shipment-ingest-topic.v1
     shipment-topic-dlt: shipment-ingest-topic.v1-dlt
-    topic-invalid-messages: shipment-ingest-messages.v1
+    topic-invalid-messages: shipment-invalid-messages.v1
   notification-service:
     base-path: http://notification:8080
 resilience4j:
