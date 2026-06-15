@@ -19,6 +19,10 @@
           "protocol": "tcp",
           "appProtocol": "http"
 
+        },
+        {
+          "containerPort": 4318,
+          "protocol": "tcp"
         }
       ],
       "environment": [
