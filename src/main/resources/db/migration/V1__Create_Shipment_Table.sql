@@ -7,23 +7,6 @@ CREATE TABLE address (
     state VARCHAR(255)
 );
 
-CREATE TABLE item (
-    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    quantity INTEGER NOT NULL,
-    unit VARCHAR(255),
-    weight NUMERIC(10,2),
-    shipment_id BIGINT NOT NULL,
-
-    CONSTRAINT fk_shipment_item
-    FOREIGN KEY (shipment_id)
-    REFERENCES shipment(id)
-    ON DELETE CASCADE
-);
-
-CREATE INDEX idx_item_shipment_id
-    ON item(shipment_id);
-
 CREATE TABLE shipment (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 
@@ -73,3 +56,20 @@ CREATE TABLE shipment (
 
     CONSTRAINT uq_external_id UNIQUE (external_id, client_id)
 );
+
+CREATE TABLE item (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit VARCHAR(255),
+    weight NUMERIC(10,2),
+    shipment_id BIGINT NOT NULL,
+
+    CONSTRAINT fk_shipment_item
+    FOREIGN KEY (shipment_id)
+    REFERENCES shipment(id)
+    ON DELETE CASCADE
+);
+
+CREATE INDEX idx_item_shipment_id
+    ON item(shipment_id);
