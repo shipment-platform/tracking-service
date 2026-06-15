@@ -12,7 +12,12 @@ CREATE TABLE item (
     name VARCHAR(255) NOT NULL,
     quantity INTEGER NOT NULL,
     unit VARCHAR(255),
-    weight DOUBLE PRECISION
+    weight DOUBLE PRECISION,
+    shipment_id BIGINT NOT NULL,
+
+    CONSTRAINT fk_shipment_item
+    FOREIGN KEY (shipment_id)
+    REFERENCES shipment(id),
 );
 
 CREATE TABLE shipment (
