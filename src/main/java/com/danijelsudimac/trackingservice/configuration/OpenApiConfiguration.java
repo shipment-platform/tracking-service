@@ -12,7 +12,7 @@ public class OpenApiConfiguration {
     @Bean
     public NotificationControllerApi notificationControllerApi(@Value("${application.notification-service.base-path}") String basePath) {
         var apiClient = new ApiClient();
-        apiClient.setBasePath("basePath");
+        apiClient.setBasePath(basePath);
         return new NotificationControllerApi(apiClient);
     }
 }
