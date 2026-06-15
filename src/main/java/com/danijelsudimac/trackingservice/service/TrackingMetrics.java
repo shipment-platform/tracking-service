@@ -2,9 +2,11 @@ package com.danijelsudimac.trackingservice.service;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class TrackingMetrics {
 
     private static final String MESSAGE_IN_DLT_COUNTER_NAME = "kafka_message_in_dlt";
@@ -38,7 +40,10 @@ public class TrackingMetrics {
     public void incrementMessageInDlt() {
         kafkaDltMessages.increment();
     }
-    public void incrementShipmentCreated() { shipmentCreated.increment();}
+    public void incrementShipmentCreated() {
+        log.info("INCREMENT shipmentCreated");
+        shipmentCreated.increment();
+    }
     public void incrementShipmentUpdated() { shipmentUpdated.increment();}
     public void incrementShipmentDeleted() { shipmentDeleted.increment();}
 }
