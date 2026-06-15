@@ -10,7 +10,7 @@ env:
   ECS_CLUSTER: shipment-service-cluster
 
 jobs:
-  docker-image-build-and-push:
+  render-task-definitions:
     runs-on: ubuntu-latest
 
     steps:

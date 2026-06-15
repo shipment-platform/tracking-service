@@ -53,3 +53,8 @@ resilience4j:
         ignore-exceptions:
           - org.springframework.web.client.HttpClientErrorException$BadRequest
           - org.springframework.web.client.HttpClientErrorException$NotFound
+management:
+  otlp:
+    metrics:
+      export:
+        url: http://localhost:4318/v1/metrics
