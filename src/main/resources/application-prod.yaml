@@ -39,4 +39,4 @@ spring:
         com.danijelsudimac.shipmentservice.model.event.ShipmentCreatedEvent
 application:
   notification-service:
-    url: https://notification-service:8080
+    url: https://notification-service.shipment-platform:8080
