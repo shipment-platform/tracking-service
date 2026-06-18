@@ -110,12 +110,7 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public KafkaTemplate<String, byte[]> poisonKafkaTemplate(ProducerFactory<String, byte[]> poisonProducerFactory) {
+    public KafkaTemplate<String, byte[]> poisonTemplate(ProducerFactory<String, byte[]> poisonProducerFactory) {
         return new KafkaTemplate<>(poisonProducerFactory);
-    }
-
-    @Bean
-    public KafkaTemplate<Object, Object> kafkaTemplate(ProducerFactory<Object, Object> producerFactory) {
-        return new KafkaTemplate<>(producerFactory);
     }
 }
