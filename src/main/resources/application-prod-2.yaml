@@ -22,8 +22,6 @@ app:
     enabled: true
   kafka-consumer:
     enabled: false
-  notification-service:
-    url: http://notification-service.shipment-platform.local
 aws:
   sqs:
     shipments-queue-name: ${SPRING_AWS_TOPIC_NAME}
