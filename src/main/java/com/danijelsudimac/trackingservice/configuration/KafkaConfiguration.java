@@ -6,9 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.SerializationException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -21,9 +21,13 @@ import org.springframework.util.backoff.FixedBackOff;
 import java.util.Optional;
 import java.util.Set;
 
-@Profile("!test")
 @Configuration
 @Slf4j
+@ConditionalOnProperty(
+        value = "app.kafka-consumer.enabled",
+        havingValue = "true",
+        matchIfMissing = true
+)
 public class KafkaConfiguration {
 
     private static final String ERROR_LOG_MESSAGE = "Error processing record with key {}: {} with message {}. Sending to {} topic";
