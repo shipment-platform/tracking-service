@@ -18,17 +18,6 @@ spring:
     baseline-on-migrate: true
   kafka:
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
-
-    consumer:
-      group-id: tracking-service
-      auto-offset-reset: earliest
-
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer
-
-    listener:
-      ack-mode: record
-
     properties:
       schema.registry.url: ${SPRING_SCHEMA_REGISTRY_URL}
 
