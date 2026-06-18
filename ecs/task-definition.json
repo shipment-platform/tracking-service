@@ -28,7 +28,7 @@
       "environment": [
         {
           "name": "SPRING_PROFILES_ACTIVE",
-          "value": "prod"
+          "value": "prod-2"
         }
       ],
       "secrets": [
