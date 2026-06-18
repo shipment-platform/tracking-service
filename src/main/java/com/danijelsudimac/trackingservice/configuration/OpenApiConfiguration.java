@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class OpenApiConfiguration {
 
     @Bean
-    public NotificationControllerApi notificationControllerApi(@Value("${app.notification-service.base-path}") String basePath) {
+    public NotificationControllerApi notificationControllerApi(@Value("${application.notification-service.base-path}") String basePath) {
         var apiClient = new ApiClient();
         apiClient.setBasePath(basePath);
         return new NotificationControllerApi(apiClient);
