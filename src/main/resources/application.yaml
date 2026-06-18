@@ -4,6 +4,8 @@ spring:
   application:
     name: tracking-service
   kafka:
+    listener:
+      ack-mode: record
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -12,7 +14,6 @@ spring:
 
       key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-
       auto-offset-reset: earliest
       enable-auto-commit: false
       properties:
