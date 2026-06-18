@@ -24,4 +24,4 @@ app:
     enabled: false
 aws:
   sqs:
-    shipments-queue-name: ${SPRING_AWS_TOPIC_NAME}
+    shipments-queue-name: ${SPRING_AWS_QUEUE_NAME}
