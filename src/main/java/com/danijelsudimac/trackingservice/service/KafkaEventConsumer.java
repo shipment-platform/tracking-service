@@ -5,7 +5,7 @@ import com.danijelsudimac.shipmentservice.model.event.ShipmentDeletedEvent;
 import com.danijelsudimac.shipmentservice.model.event.ShipmentUpdatedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Profile;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -13,9 +13,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @EnableKafka
-@Profile("!test")
 @Slf4j
 @RequiredArgsConstructor
+@ConditionalOnProperty(
+        value = "app.kafka-consumer.enabled",
+        havingValue = "true",
+        matchIfMissing = true
+)
 @KafkaListener(topics = "${application.kafka.shipment-topic}")
 public class KafkaEventConsumer implements EventConsumer{
 

@@ -15,3 +15,6 @@ resilience4j:
     instances:
       notification-service:
         base-config: default
+app:
+  kafka-consumer:
+    enabled: false

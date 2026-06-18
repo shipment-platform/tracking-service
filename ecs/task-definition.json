@@ -28,7 +28,7 @@
       "environment": [
         {
           "name": "SPRING_PROFILES_ACTIVE",
-          "value": "prod"
+          "value": "prod-2"
         }
       ],
       "secrets": [
@@ -67,6 +67,10 @@
         {
           "name": "SPRING_SCHEMA_REGISTRY_SECRET",
           "valueFrom": "arn:aws:ssm:us-east-2:581979856637:parameter/SPRING_SCHEMA_REGISTRY_SECRET"
+        },
+        {
+          "name": "SPRING_AWS_TOPIC_NAME",
+          "valueFrom": "arn:aws:ssm:us-east-2:581979856637:parameter/SPRING_AWS_TOPIC_NAME"
         }
       ],
       "logConfiguration": {

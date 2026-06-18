@@ -1,4 +1,7 @@
 spring:
+  autoconfigure:
+    exclude:
+      - io.awspring.cloud.autoconfigure.sqs.SqsAutoConfiguration
   datasource:
     url: ${SPRING_DATASOURCE_URL_2}
     username: ${SPRING_DATASOURCE_USERNAME_2}
@@ -37,6 +40,6 @@ spring:
       sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="${SPRING_KAFKA_API_KEY}" password="${SPRING_KAFKA_API_SECRET}";
       specific.protobuf.value.type:
         com.danijelsudimac.shipmentservice.model.event.ShipmentCreatedEvent
-application:
+app:
   notification-service:
-    url: https://notification-service.shipment-platform:8080
+    url: http://notification-service.shipment-platform.local
