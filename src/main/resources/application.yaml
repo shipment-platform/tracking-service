@@ -8,7 +8,7 @@ spring:
       ack-mode: record
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+      value-serializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer
     consumer:
       group-id: tracking-service-group
 

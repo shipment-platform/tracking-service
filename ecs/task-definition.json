@@ -69,8 +69,8 @@
           "valueFrom": "arn:aws:ssm:us-east-2:581979856637:parameter/SPRING_SCHEMA_REGISTRY_SECRET"
         },
         {
-          "name": "SPRING_AWS_TOPIC_NAME",
-          "valueFrom": "arn:aws:ssm:us-east-2:581979856637:parameter/SPRING_AWS_TOPIC_NAME"
+          "name": "SPRING_AWS_QUEUE_NAME",
+          "valueFrom": "arn:aws:ssm:us-east-2:581979856637:parameter/SPRING_AWS_QUEUE_NAME"
         }
       ],
       "logConfiguration": {

@@ -3,21 +3,28 @@ package com.danijelsudimac.trackingservice.configuration;
 import com.danijelsudimac.trackingservice.service.TrackingMetrics;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.SerializationException;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
 import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.DeserializationException;
 import org.springframework.util.backoff.FixedBackOff;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -37,24 +44,26 @@ public class KafkaConfiguration {
             IllegalArgumentException.class
     ); //poison pill exceptions
 
-    public final String topic;
-    public final String topicDtl;
-    public final String topicInvalidMessages;
-    public final TrackingMetrics trackingMetrics;
+    private final String topicDtl;
+    private final String topicInvalidMessages;
+    private final TrackingMetrics trackingMetrics;
+    private final KafkaTemplate<Object, Object> kafkaTemplate;
 
-    public KafkaConfiguration(@Value("${application.kafka.shipment-topic}") String topic,
-                              @Value("${application.kafka.shipment-topic-dlt}") String topicDtl,
+    public KafkaConfiguration(@Value("${application.kafka.shipment-topic-dlt}") String topicDtl,
                               @Value("${application.kafka.topic-invalid-messages}") String topicInvalidMessages,
+                              KafkaTemplate<Object, Object> kafkaTemplate,
                               TrackingMetrics trackingMetrics) {
-        this.topic = topic;
         this.topicDtl = topicDtl;
         this.topicInvalidMessages = topicInvalidMessages;
+        this.kafkaTemplate = kafkaTemplate;
         this.trackingMetrics = trackingMetrics;
     }
+
     @Bean
-    public DefaultErrorHandler errorHandler(KafkaTemplate<Object, Object> template) {
+    public DefaultErrorHandler errorHandler(KafkaTemplate<String, byte[]> poisonTemplate) {
+
         var recoverer =
-                new DeadLetterPublishingRecoverer(template,
+                new DeadLetterPublishingRecoverer(Map.of(Object.class, kafkaTemplate, byte[].class, poisonTemplate),
                         (record, ex) -> {
                             Throwable rootException = Optional.ofNullable(ex.getCause()).orElse(ex);
                             var topic = resolveTopic(rootException);
@@ -92,5 +101,18 @@ public class KafkaConfiguration {
         factory.getContainerProperties().setMissingTopicsFatal(false);
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.RECORD);
         return factory;
+    }
+
+    @Bean
+    ProducerFactory<String, byte[]> poisonProducerFactory(KafkaProperties kafkaProperties) {
+        Map<String, Object> props = new HashMap<>(kafkaProperties.buildProducerProperties());
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class);
+
+        return new DefaultKafkaProducerFactory<>(props);
+    }
+
+    @Bean
+    public KafkaTemplate<String, byte[]> poisonKafkaTemplate(ProducerFactory<String, byte[]> poisonProducerFactory) {
+        return new KafkaTemplate<>(poisonProducerFactory);
     }
 }
