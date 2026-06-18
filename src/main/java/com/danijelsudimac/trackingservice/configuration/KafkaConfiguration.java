@@ -47,23 +47,21 @@ public class KafkaConfiguration {
     private final String topicDtl;
     private final String topicInvalidMessages;
     private final TrackingMetrics trackingMetrics;
-    private final KafkaTemplate<Object, Object> kafkaTemplate;
 
     public KafkaConfiguration(@Value("${application.kafka.shipment-topic-dlt}") String topicDtl,
                               @Value("${application.kafka.topic-invalid-messages}") String topicInvalidMessages,
-                              KafkaTemplate<Object, Object> kafkaTemplate,
                               TrackingMetrics trackingMetrics) {
         this.topicDtl = topicDtl;
         this.topicInvalidMessages = topicInvalidMessages;
-        this.kafkaTemplate = kafkaTemplate;
         this.trackingMetrics = trackingMetrics;
     }
 
     @Bean
-    public DefaultErrorHandler errorHandler(KafkaTemplate<String, byte[]> poisonTemplate) {
+    public DefaultErrorHandler errorHandler(KafkaTemplate<String, byte[]> poisonTemplate,
+                                            KafkaTemplate<Object, Object> template) {
 
         var recoverer =
-                new DeadLetterPublishingRecoverer(Map.of(Object.class, kafkaTemplate, byte[].class, poisonTemplate),
+                new DeadLetterPublishingRecoverer(Map.of(Object.class, template, byte[].class, poisonTemplate),
                         (record, ex) -> {
                             Throwable rootException = Optional.ofNullable(ex.getCause()).orElse(ex);
                             var topic = resolveTopic(rootException);
@@ -114,5 +112,10 @@ public class KafkaConfiguration {
     @Bean
     public KafkaTemplate<String, byte[]> poisonKafkaTemplate(ProducerFactory<String, byte[]> poisonProducerFactory) {
         return new KafkaTemplate<>(poisonProducerFactory);
+    }
+
+    @Bean
+    public KafkaTemplate<Object, Object> kafkaTemplate(ProducerFactory<Object, Object> producerFactory) {
+        return new KafkaTemplate<>(producerFactory);
     }
 }
