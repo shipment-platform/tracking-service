@@ -72,6 +72,12 @@ public class KafkaConfiguration {
     }
 
     @Bean
+    public ProducerFactory<Object, Object> producerFactory(KafkaProperties kafkaProperties) {
+        return new DefaultKafkaProducerFactory<>(
+                kafkaProperties.buildProducerProperties());
+    }
+
+    @Bean
     ProducerFactory<String, byte[]> poisonProducerFactory(KafkaProperties kafkaProperties) {
         Map<String, Object> props = new HashMap<>(kafkaProperties.buildProducerProperties());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class);
