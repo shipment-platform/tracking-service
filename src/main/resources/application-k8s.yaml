@@ -29,6 +29,11 @@ spring:
       sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="${SPRING_KAFKA_API_KEY}" password="${SPRING_KAFKA_API_SECRET}";
       specific.protobuf.value.type:
         com.danijelsudimac.shipmentservice.model.event.ShipmentCreatedEvent
+management:
+  otlp:
+    metrics:
+      export:
+        enabled: false
 application:
   notification-service:
-    base-path: http://notification-service.shipment-platform.local
+    base-path: http://notification-service
